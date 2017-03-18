@@ -1,10 +1,10 @@
 package com.jfluent.container;
 
 import com.jfluent.exception.OperationFailureException;
-import com.jfluent.function.CheckedConsumer;
-import com.jfluent.function.CheckedFunction;
-import com.jfluent.function.CheckedPredicate;
-import com.jfluent.function.CheckedSupplier;
+import com.jfluent.function.checked.CheckedConsumer;
+import com.jfluent.function.checked.CheckedFunction;
+import com.jfluent.function.checked.CheckedPredicate;
+import com.jfluent.function.checked.CheckedSupplier;
 
 import java.util.NoSuchElementException;
 import java.util.function.Function;
@@ -35,12 +35,16 @@ public class Try<T> {
         this.isSuccess = false;
     }
 
-    public T value() throws OperationFailureException {
+    public T getValue() throws OperationFailureException {
         if(isSuccess) {
             return result;
         } else {
             throw new OperationFailureException("Try object contains no value.", error);
         }
+    }
+
+    public Throwable getError() {
+        return error;
     }
 
     public <R> Try<R> map(CheckedFunction<T, R> f) {

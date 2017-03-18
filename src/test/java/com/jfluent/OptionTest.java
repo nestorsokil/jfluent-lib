@@ -56,7 +56,7 @@ public class OptionTest {
         Option.of(null).or(() -> value.anInt = 300).orNull();
         Assert.assertTrue(value.anInt == 300);
 
-        Option.of("Some value").or(() -> value.anInt = 400).map(i -> value.anInt = 500).orNull();
+        Option.of("Some getValue").or(() -> value.anInt = 400).map(i -> value.anInt = 500).orNull();
         Assert.assertTrue(value.anInt == 300);
     }
 
