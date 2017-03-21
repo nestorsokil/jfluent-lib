@@ -67,6 +67,10 @@ public class Option<T> {
         return (isEmpty() || p.test(value)) ? this : empty();
     }
 
+    public final <R> Option<R> andThen(Function<Option<T>, Option<R>> f) {
+        return isEmpty() ? empty() : f.apply(this);
+    }
+
     public T orNull() {
         return isEmpty() ? null : value;
     }
