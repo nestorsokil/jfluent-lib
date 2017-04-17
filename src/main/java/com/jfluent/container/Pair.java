@@ -1,5 +1,6 @@
 package com.jfluent.container;
 
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -31,7 +32,8 @@ public class Pair<T,U> {
         return function.apply(first, second);
     }
 
-    public <R,S> Pair<R,S> flatMap(Function<T, Function<U, Pair<R,S>>> function) {
-        return function.apply(first).apply(second);
+    public Pair<T,U> apply(BiConsumer<T,U> consumer) {
+        consumer.accept(first, second);
+        return this;
     }
 }

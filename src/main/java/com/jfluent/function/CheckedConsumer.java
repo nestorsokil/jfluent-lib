@@ -1,4 +1,4 @@
-package com.jfluent.function.checked;
+package com.jfluent.function;
 
 /**
  * Created by nestorsokil on 17.03.2017.

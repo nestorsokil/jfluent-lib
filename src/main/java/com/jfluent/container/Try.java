@@ -1,10 +1,10 @@
 package com.jfluent.container;
 
 import com.jfluent.exception.OperationFailureException;
-import com.jfluent.function.checked.CheckedConsumer;
-import com.jfluent.function.checked.CheckedFunction;
-import com.jfluent.function.checked.CheckedPredicate;
-import com.jfluent.function.checked.CheckedSupplier;
+import com.jfluent.function.CheckedConsumer;
+import com.jfluent.function.CheckedFunction;
+import com.jfluent.function.CheckedPredicate;
+import com.jfluent.function.CheckedSupplier;
 
 import java.util.NoSuchElementException;
 import java.util.function.Function;

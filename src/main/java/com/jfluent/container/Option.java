@@ -16,17 +16,17 @@ public class Option<T> {
     private T value;
     private boolean isEmpty;
 
-    private Option(T value){
+    private Option(T value) {
         this.value = value;
         this.isEmpty = false;
     }
 
-    private Option(){
+    private Option() {
         this.value = null;
         this.isEmpty = true;
     }
 
-    public static <T> Option<T> of(T value){
+    public static <T> Option<T> of(T value) {
         return value == null ? empty() : new Option<>(value);
     }
 
@@ -67,11 +67,24 @@ public class Option<T> {
         return (isEmpty() || p.test(value)) ? this : empty();
     }
 
+    public final Option<T> filterNot(Predicate<T> p) {
+        return (isEmpty() || !p.test(value)) ? this : empty();
+    }
+
     public T orNull() {
         return isEmpty() ? null : value;
     }
 
-    public Option<T> ifEmpty(Runnable r){
+    public Try<T> orError(Supplier<Throwable> errorSupplier) {
+        if(isEmpty()) {
+            return Try.execute(() -> {
+                throw errorSupplier.get();
+            });
+        }
+        return Try.execute(this::get);
+    }
+
+    public Option<T> ifEmpty(Runnable r) {
         if(isEmpty()) r.run();
         return this;
     }

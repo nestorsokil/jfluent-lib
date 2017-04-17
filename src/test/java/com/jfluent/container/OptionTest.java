@@ -1,4 +1,4 @@
-package com.jfluent;
+package com.jfluent.container;
 
 import com.jfluent.container.Option;
 import org.junit.Assert;
