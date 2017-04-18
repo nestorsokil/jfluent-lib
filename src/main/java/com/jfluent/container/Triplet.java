@@ -1,7 +1,7 @@
 package com.jfluent.container;
 
-import com.jfluent.function.TripleConsumer;
-import com.jfluent.function.TripleFunction;
+import com.jfluent.function.simple.ThreeToUnit;
+import com.jfluent.function.simple.ThreeToResult;
 
 /**
  * Created by nestorsokil on 18.03.2017.
@@ -12,11 +12,7 @@ public class Triplet<T,U,V> {
     private U second;
     private V third;
 
-    public static <T,U,V> Triplet<T,U,V> of(T first, U second, V third) {
-        return new Triplet<>(first, second, third);
-    }
-
-    private Triplet(T first, U second, V third){
+    public Triplet(T first, U second, V third){
         this.first = first;
         this.second = second;
         this.third = third;
@@ -34,11 +30,11 @@ public class Triplet<T,U,V> {
         return third;
     }
 
-    public <X,Y,Z> Triplet<X,Y,Z> flatMap(TripleFunction<T,U,V, Triplet<X,Y,Z>> function) {
+    public <X,Y,Z> Triplet<X,Y,Z> flatMap(ThreeToResult<T,U,V, Triplet<X,Y,Z>> function) {
         return function.apply(first, second, third);
     }
 
-    public Triplet<T,U,V> apply(TripleConsumer<T,U,V> consumer) {
+    public Triplet<T,U,V> apply(ThreeToUnit<T,U,V> consumer) {
         consumer.accept(first, second, third);
         return this;
     }

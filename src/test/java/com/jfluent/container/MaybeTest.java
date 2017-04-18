@@ -1,6 +1,6 @@
 package com.jfluent.container;
 
-import com.jfluent.container.Option;
+import com.jfluent.exception.EmptyValueException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * Created by nestorsokil on 17.03.2017.
  */
-public class OptionTest {
+public class MaybeTest {
     private static class DTO {
         private int anInt;
         private String aString;
@@ -27,7 +27,7 @@ public class OptionTest {
         dto.aString = "Some string";
 
         List<String> singleString =
-                Option.of(dto)
+                Maybe.of(dto)
                         .filter(d -> d.anInt < 50)
                         .ifEmpty(()  -> logger.println("[ERROR] Value's too big"))
                         .ifPresent(d -> logger.println("[INFO] Working with " + d.toString()))
@@ -50,28 +50,28 @@ public class OptionTest {
     public void testLaziness() throws Exception {
         DTO value = new DTO();
         value.anInt = 100;
-        Option.of(null).map(o -> value.anInt = 200).orNull();
+        Maybe.of(null).map(o -> value.anInt = 200).orNull();
         Assert.assertTrue(value.anInt == 100);
 
-        Option.of(null).or(() -> value.anInt = 300).orNull();
+        Maybe.of(null).or(() -> value.anInt = 300).orNull();
         Assert.assertTrue(value.anInt == 300);
 
-        Option.of("Some getValue").or(() -> value.anInt = 400).map(i -> value.anInt = 500).orNull();
+        Maybe.of("Some getValue").or(() -> value.anInt = 400).map(i -> value.anInt = 500).orNull();
         Assert.assertTrue(value.anInt == 300);
     }
 
     @Test(expected = RuntimeException.class)
     public void testException() throws Exception {
-        String str = Option.of("str").map(s -> (String) null).orElseThrow(RuntimeException::new);
+        String str = Maybe.of("str").map(s -> (String) null).orElseThrow(RuntimeException::new);
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test(expected = EmptyValueException.class)
     public void testNone() throws Exception {
-        Option.of(null).get();
+        Maybe.of(null).get();
     }
 
     @Test
     public void matchesTest() {
-        Assert.assertTrue(Option.of(LocalDateTime.now()).matches(d -> d.getYear() > 2000));
+        Assert.assertTrue(Maybe.of(LocalDateTime.now()).matches(d -> d.getYear() > 2000));
     }
 }
