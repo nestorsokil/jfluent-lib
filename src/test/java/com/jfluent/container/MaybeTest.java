@@ -7,7 +7,6 @@ import org.junit.Test;
 import java.io.PrintStream;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 /**
@@ -56,7 +55,7 @@ public class MaybeTest {
         Maybe.of(null).or(() -> value.anInt = 300).orNull();
         Assert.assertTrue(value.anInt == 300);
 
-        Maybe.of("Some getValue").or(() -> value.anInt = 400).map(i -> value.anInt = 500).orNull();
+        Maybe.of("Some unwrap").or(() -> value.anInt = 400).map(i -> value.anInt = 500).orNull();
         Assert.assertTrue(value.anInt == 300);
     }
 
@@ -67,7 +66,7 @@ public class MaybeTest {
 
     @Test(expected = EmptyValueException.class)
     public void testNone() throws Exception {
-        Maybe.of(null).get();
+        Maybe.of(null).unwrap();
     }
 
     @Test

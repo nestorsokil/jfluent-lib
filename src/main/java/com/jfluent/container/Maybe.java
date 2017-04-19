@@ -36,8 +36,8 @@ public class Maybe<T> {
         return (Maybe<T>) EMPTY;
     }
 
-    public T get() throws EmptyValueException {
-        return orElseThrow(() -> new EmptyValueException("Empty.get()"));
+    public T unwrap() throws EmptyValueException {
+        return orElseThrow(() -> new EmptyValueException("Empty.unwrap()"));
     }
 
     public boolean isEmpty() {
@@ -72,7 +72,7 @@ public class Maybe<T> {
         return (isEmpty() || !p.test(value)) ? this : empty();
     }
 
-    public T orNull() {
+    public final T orNull() {
         return isEmpty() ? null : value;
     }
 
@@ -82,7 +82,7 @@ public class Maybe<T> {
                 throw errorSupplier.supply();
             });
         }
-        return Result.execute(this::get);
+        return Result.execute(this::unwrap);
     }
 
     public Maybe<T> ifEmpty(Runnable r) {

@@ -35,7 +35,7 @@ public class Result<T> {
         this.isSuccess = false;
     }
 
-    public T getValue() throws OperationFailureException {
+    public T unwrap() throws OperationFailureException {
         if(isSuccess) {
             return result;
         } else {
@@ -43,7 +43,7 @@ public class Result<T> {
         }
     }
 
-    public Throwable getError() {
+    public Throwable unwrapError() {
         return error;
     }
 
