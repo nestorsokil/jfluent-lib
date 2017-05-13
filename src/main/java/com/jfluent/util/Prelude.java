@@ -24,6 +24,11 @@ public class Prelude {
         return Maybe.of(supplier.supply());
     }
 
+    @SafeVarargs
+    public static <T> Maybe<T> maybeAny(T... nullableValues) {
+        return Maybe.any(nullableValues);
+    }
+
     public static <T> Result<T> result(UnitToOneChecked<T> unsafe){
         return Result.execute(unsafe);
     }

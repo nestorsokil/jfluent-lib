@@ -7,6 +7,12 @@ import com.jfluent.function.simple.OneToUnit;
 import com.jfluent.function.simple.Predicate;
 import com.jfluent.function.simple.UnitToOne;
 
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -29,6 +35,16 @@ public class Maybe<T> {
 
     public static <T> Maybe<T> of(T value) {
         return value == null ? empty() : new Maybe<>(value);
+    }
+
+    @SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "ConstantConditions"})
+    private static <T> Maybe<T> fromOption(Optional<T> option) {
+        return of(option.get());
+    }
+
+    @SafeVarargs
+    public static <T> Maybe<T> any(T... values) {
+        return fromOption(Stream.of(values).filter(Objects::nonNull).findFirst());
     }
 
     @SuppressWarnings("unchecked")
