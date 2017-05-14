@@ -56,44 +56,48 @@ public class Maybe<T> {
         return orElseThrow(() -> new EmptyValueException("Empty.unwrap()"));
     }
 
+    public T unwrapOr(T other) {
+        return isEmpty ? other : value;
+    }
+
     public boolean isEmpty() {
         return isEmpty;
     }
 
     public boolean isPresent() {
-        return !isEmpty();
+        return !isEmpty;
     }
 
     public final <R> Maybe<R> or(UnitToOne<R> alternative) {
-        return isEmpty() ? Maybe.of(alternative.supply()) : empty();
+        return isEmpty ? Maybe.of(alternative.supply()) : empty();
     }
 
     public final <R> Maybe<R> or(R alternative) {
-        return isEmpty() ? Maybe.of(alternative) : empty();
+        return isEmpty ? Maybe.of(alternative) : empty();
     }
 
     public final <R> Maybe<R> map(OneToOne<T, R> f){
-        return isEmpty() ? Maybe.of(null) : Maybe.of(f.apply(value));
+        return isEmpty ? Maybe.of(null) : Maybe.of(f.apply(value));
     }
 
     public final <R> Maybe<R> flatMap(OneToMaybe<T, R> f) {
-        return isEmpty() ? empty() : f.apply(value);
+        return isEmpty ? empty() : f.apply(value);
     }
 
     public final Maybe<T> filter(Predicate<T> p) {
-        return (isEmpty() || p.test(value)) ? this : empty();
+        return (isEmpty || p.test(value)) ? this : empty();
     }
 
     public final Maybe<T> filterNot(Predicate<T> p) {
-        return (isEmpty() || !p.test(value)) ? this : empty();
+        return (isEmpty || !p.test(value)) ? this : empty();
     }
 
     public final T orNull() {
-        return isEmpty() ? null : value;
+        return isEmpty ? null : value;
     }
 
     public Result<T> orError(UnitToOne<Throwable> errorSupplier) {
-        if(isEmpty()) {
+        if(isEmpty) {
             return Result.execute(() -> {
                 throw errorSupplier.supply();
             });
@@ -102,26 +106,26 @@ public class Maybe<T> {
     }
 
     public Maybe<T> ifEmpty(Runnable r) {
-        if(isEmpty()) r.run();
+        if(isEmpty) r.run();
         return this;
     }
 
     public Maybe<T> ifPresent(Runnable r) {
-        if(!isEmpty()) r.run();
+        if(!isEmpty) r.run();
         return this;
     }
 
     public Maybe<T> ifPresent(OneToUnit<T> c) {
-        if(!isEmpty()) c.consume(value);
+        if(!isEmpty) c.consume(value);
         return this;
     }
 
     public boolean matches(Predicate<T> p) {
-        return !isEmpty() && p.test(value);
+        return !isEmpty && p.test(value);
     }
 
     public <X extends Throwable> T orElseThrow(UnitToOne<? extends X> exceptionSupplier) throws X {
-        if(!isEmpty()) {
+        if(!isEmpty) {
             return value;
         } else {
             throw exceptionSupplier.supply();
@@ -129,12 +133,12 @@ public class Maybe<T> {
     }
 
     public Stream<T> stream() {
-        return isEmpty() ? Stream.empty() : Stream.of(value);
+        return isEmpty ? Stream.empty() : Stream.of(value);
     }
 
     @Override
     public String toString() {
-        return isEmpty() ? "Empty maybe" : String.format("Maybe[%s]", value.toString());
+        return isEmpty ? "Empty maybe" : String.format("Maybe[%s]", value.toString());
     }
 
     @Override
@@ -142,11 +146,11 @@ public class Maybe<T> {
         if(this == obj) return true;
         if(!this.getClass().equals(obj.getClass())) return false;
         Maybe that = (Maybe) obj;
-        return !this.isEmpty() ? this.value.equals(that.value) : that.isEmpty();
+        return !this.isEmpty ? this.value.equals(that.value) : that.isEmpty;
     }
 
     @Override
     public int hashCode() {
-        return isEmpty() ? 0 : value.hashCode();
+        return isEmpty ? 0 : value.hashCode();
     }
 }
