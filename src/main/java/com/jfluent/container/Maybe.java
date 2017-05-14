@@ -38,7 +38,7 @@ public class Maybe<T> {
     }
 
     @SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "ConstantConditions"})
-    private static <T> Maybe<T> fromOption(Optional<T> option) {
+    public static <T> Maybe<T> fromOption(Optional<T> option) {
         return of(option.get());
     }
 
