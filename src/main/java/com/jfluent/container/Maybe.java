@@ -39,7 +39,7 @@ public class Maybe<T> {
 
     @SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "ConstantConditions"})
     public static <T> Maybe<T> fromOption(Optional<T> option) {
-        return of(option.get());
+        return option.map(Maybe::of).orElseGet(Maybe::empty);
     }
 
     @SafeVarargs
